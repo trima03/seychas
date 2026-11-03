@@ -1,0 +1,10 @@
+{
+  "name": "seychas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Одна задача сейчас, остальные мысли на потом. Локальное приложение для фокуса.",
+  "scripts": {"test": "node --test", "start": "python3 -m http.server 4173 --bind 127.0.0.1 --directory dist"},
+  "engines": {"node": ">=22"},
+  "license": "MIT"
+}

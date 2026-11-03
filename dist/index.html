@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f3ed">
+  <meta name="description" content="Выберите одну задачу, начните короткий подход и оставьте новые мысли на потом. Всё сохраняется в вашем браузере.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Сейчас · место для одной задачи</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#task-title">К текущей задаче</a>
+  <div class="shell">
+    <header>
+      <a class="brand" href="./" aria-label="Сейчас, главная"><img src="./icon.svg" width="32" height="32" alt=""><span>сейчас<span class="brand-dot">.</span></span></a>
+      <span class="tagline">место для одной задачи</span>
+      <button id="data-open" class="quiet" type="button">Мои данные <span aria-hidden="true">↗</span></button>
+    </header>
+
+    <div id="storage-warning" class="warning" role="alert" hidden></div>
+    <div class="intro"><p class="eyebrow" id="date-label">ВАШЕ ВРЕМЯ</p><h1>Побудьте в одной задаче.</h1><p>Остальные мысли можно оставить здесь и вернуться к ним позже.</p></div>
+
+    <main class="workspace">
+      <section class="focus-card" aria-labelledby="focus-heading">
+        <div class="card-top"><h2 id="focus-heading"><span class="status-dot" aria-hidden="true"></span>Сейчас в фокусе</h2><span id="timer-status" class="small-label" role="status">В своём темпе</span></div>
+        <label for="task-title" class="field-label">Один конкретный результат</label>
+        <textarea id="task-title" rows="2" maxlength="500" placeholder="Что вы хотите закончить сейчас?" autocomplete="off"></textarea>
+        <div class="return-note" id="return-note"><label for="task-step">На чём остановились?</label><textarea id="task-step" rows="2" maxlength="500" placeholder="Запишите следующий шаг, чтобы было легко вернуться"></textarea></div>
+        <div class="timer-area">
+          <div id="duration-options" class="durations" role="group" aria-label="Длительность подхода">
+            <button type="button" data-minutes="10" aria-pressed="true">10 мин</button><button type="button" data-minutes="25" aria-pressed="false">25 мин</button><button type="button" data-minutes="45" aria-pressed="false">45 мин</button>
+          </div>
+          <p id="clock" class="clock" role="timer" aria-label="Осталось 10 минут">10:00</p>
+          <p id="timer-hint" class="timer-hint">Можно начать с небольшого шага.</p>
+          <div class="timer-controls"><button id="timer-toggle" class="primary" type="button">Начать подход <span aria-hidden="true">↗</span></button><button id="timer-reset" class="round" type="button" aria-label="Начать отсчёт заново" title="Начать отсчёт заново">↺</button></div>
+          <button id="return-button" class="return-button" type="button">Отвлёкся, хочу вернуться <span aria-hidden="true">↩</span></button>
+        </div>
+        <div class="focus-bottom"><span id="completion-hint">Достаточно одного законченного шага.</span><button id="complete" type="button" class="complete-button">Готово <span aria-hidden="true">✓</span></button></div>
+        <div id="break-actions" class="break-actions" hidden><p>Подход закончился, можно немного передохнуть.</p><button id="start-break" type="button" class="quiet">Перерыв на 5 минут</button><button id="next-round" type="button" class="quiet">Ещё один подход</button></div>
+      </section>
+
+      <aside class="later-card" aria-labelledby="later-heading">
+        <div class="card-top"><h2 id="later-heading">На потом <span id="later-count" class="count">0</span></h2><span class="little-star" aria-hidden="true">✳</span></div>
+        <p class="aside-intro">Пришла новая мысль? Запишите её, чтобы спокойно продолжить.</p>
+        <form id="thought-form"><label for="thought" class="sr-only">Новая мысль на потом</label><textarea id="thought" rows="3" maxlength="500" placeholder="Например, посмотреть новую идею…"></textarea><div class="capture-bottom"><span>Alt + N, чтобы записать</span><button type="submit" aria-label="Сохранить мысль на потом">↵</button></div></form>
+        <div id="thought-list" class="thought-list"></div>
+        <div id="later-empty" class="empty-state"><span class="empty-mark" aria-hidden="true">⌁</span><p>Здесь есть место для мыслей,<br>которые могут подождать.</p></div>
+        <div class="aside-footer"><span aria-hidden="true">◉</span> Запись останется в этом браузере.</div>
+      </aside>
+    </main>
+
+    <section class="day-panel" aria-labelledby="day-heading"><div class="day-summary"><div><h2 id="day-heading">Сегодня уже получилось</h2><p id="day-total">Каждый небольшой шаг считается.</p></div><button id="history-toggle" type="button" class="quiet" aria-expanded="false" aria-controls="history-list">Посмотреть сделанное <span aria-hidden="true">↓</span></button></div><div id="history-list" hidden></div></section>
+    <footer><span>Одна задача. В вашем темпе.</span><span><span class="local-dot" aria-hidden="true"></span><span id="save-status">Хранится на устройстве</span><span class="footer-separator">/</span><a href="https://github.com/trima03/seychas" target="_blank" rel="noopener noreferrer">GitHub ↗</a></span></footer>
+  </div>
+
+  <dialog id="data-dialog" aria-labelledby="data-heading"><form method="dialog" class="dialog-head"><h2 id="data-heading">Ваши записи остаются у вас</h2><button class="round" aria-label="Закрыть окно">×</button></form><p>Задачи сохраняются в этом браузере. Если очистить его данные, записи исчезнут, поэтому иногда сохраняйте резервную копию.</p><div class="data-actions"><button id="export-markdown" type="button" class="primary">Скачать для Obsidian (.md)</button><button id="export-json" type="button" class="secondary">Сохранить резервную копию</button><label class="secondary file-label">Восстановить из копии<input id="import-json" type="file" accept=".json,application/json"></label></div><p class="dialog-foot">Копия переносит записи между устройствами, автоматической синхронизации пока нет. Во время импорта текущие записи заменяются.</p><p class="dialog-foot">После первого открытия по HTTPS приложение может работать без интернета. На iPhone его можно добавить на экран «Домой» через меню «Поделиться».</p><button id="install" type="button" class="quiet" hidden>Установить приложение</button><p id="data-message" role="status"></p></dialog>
+  <dialog id="tab-dialog" aria-labelledby="tab-heading"><h2 id="tab-heading">Записи изменились в другой вкладке</h2><p>Обновите эту страницу, чтобы продолжить с последней сохранённой версией.</p><button id="reload" class="primary" type="button">Обновить страницу</button></dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-heading"><h2 id="confirm-heading">Продолжить?</h2><p id="confirm-message"></p><form method="dialog" class="confirm-actions"><button value="cancel" class="secondary">Отмена</button><button value="accept" class="primary">Продолжить</button></form></dialog>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <noscript><p class="warning">Чтобы запустить таймер и сохранять записи, включите JavaScript в браузере.</p></noscript>
+</body>
+</html>
